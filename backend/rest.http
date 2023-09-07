@@ -5,8 +5,8 @@ POST http://localhost:8080/api/v1/users/create
 Content-Type: application/json
 
 {
-    "email": "def@gam.com",
-    "password": "Acsdf@1"
+    "email": "aatma@gmail.com",
+    "password": "Aatma@123"
 }
 
 ### login
@@ -14,8 +14,8 @@ POST http://localhost:8080/api/v1/users/login
 Content-Type: application/json
 
 {
-    "email": "def@gam.com",
-    "password": "Acsdf@2"
+    "email": "roshan@gmail.com",
+    "password": "Roshan@123"
 }
 
 ### logout
@@ -40,3 +40,29 @@ GET http://localhost:8080/api/v1/books/id/3
 
 ###
 GET http://localhost:8080/api/v1/books/list?title=&author=&publisher=&genre=&s_price=&e_price=&sort_field=&sort_type=&offset=0&limit=10
+
+###
+POST http://localhost:8080/api/v1/cart/add/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMTE3MDMsImV4cCI6MTY5NDExMjAwM30.ZWFFmIhZkZ-oZq5K2Y-iJzOMHArjrZqTRCw0n8Wz-do
+Content-Type: application/json
+
+{
+    "book_id": 2,
+    "count": 10
+}
+
+###
+GET http://localhost:8080/api/v1/cart/list/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMTE3MDMsImV4cCI6MTY5NDExMjAwM30.ZWFFmIhZkZ-oZq5K2Y-iJzOMHArjrZqTRCw0n8Wz-do
+
+###
+DELETE  http://localhost:8080/api/v1/cart/delete/1/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMDAyNDYsImV4cCI6MTY5NDEwMDU0Nn0.TSkPc5ErDkx9zGFWkAM0zZ7oKLP0NhtN6eRDVbyN-tQ
+
+###
+POST http://localhost:8080/api/v1/order/create/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMTIyODYsImV4cCI6MTY5NDExMjU4Nn0.p6nk29jINuZ4z17hwWsmQYDo8opgKQtaelsBFOWUBnk
+
+###
+GET http://localhost:8080/api/v1/order/history/1?book_id=&s_count=&e_count=&s_price=&e_price=&limit=10&offset=0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMTU1NjcsImV4cCI6MTY5NDExNTg2N30.eXzcsGhOXhhwk1c7tnpW2dJfhn_-ufl1t1R-WRl3YFc
