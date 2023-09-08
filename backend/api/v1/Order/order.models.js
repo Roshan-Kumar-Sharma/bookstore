@@ -9,7 +9,7 @@ const OrderSchema = new Schema({
         required: [true, "user id is required"]
     },
     book_ids: {
-        type: [Number],
+        type: [Object],
         required: [true, "book ids are required"]
     },
     total_book: {
