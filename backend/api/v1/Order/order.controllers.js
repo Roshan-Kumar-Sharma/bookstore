@@ -21,7 +21,7 @@ const getOrderHistory = async (req, res, next) => {
         offset = parseInt(offset)
         book_id = parseInt(book_id)
 
-        console.log(user_id, book_id, limit, offset)
+        // console.log(user_id, book_id, limit, offset)
 
         if (isNaN(user_id) || isNaN(limit) || isNaN(offset)) throw createHttpError.BadRequest("Invalid data")
 
@@ -76,31 +76,38 @@ const getOrderHistory = async (req, res, next) => {
         if (sort_type === "desc") sort = -1
         else sort = 1
 
-        console.log(query, sort_field, sort, limit, offset)
+        // console.log(query, sort_field, sort, limit, offset)
 
         let orders = await Order.find(query, "-_id -__v -updatedAt").skip(offset).limit(limit).sort({ [sort_field]: sort })
 
         let bookIdsMap = {}
         orders.forEach(order => {
-            order.book_ids.forEach(id => (bookIdsMap[id] = {}))
+            order.book_ids.forEach(book => (bookIdsMap[book.book_id] = book.count))
         })
+
+        // console.log(bookIdsMap)
 
         let bookIdsArr = [...new Set(Object.keys(bookIdsMap).map(Number)).keys()]
 
         let books = await Book.find({ book_id: { $in: bookIdsArr } }, "-_id -__v -availability")
 
-        bookIdsMap = {}
-        books.forEach(book => (bookIdsMap[book.book_id] = book))
+        let bookObj = {}
+        books.forEach(book => {
+            let count = bookIdsMap[String(book.book_id)] 
+            book._doc.count = count
+            bookObj[book.book_id] = book
+        })
 
         orders.forEach(order => {
             let books = []
-            order.book_ids.forEach(id => {
-                let obj = bookIdsMap[String(id)]
+            order.book_ids.forEach(book => {
+                console.log(book)
+                let obj = bookObj[String(book.book_id)]
                 books.push(obj)
             })
 
             order._doc.book_ids = books
-            order._doc.createdAt = convertToTimezone(order.createdAt).format("LLL")
+            order._doc.createdAt = convertToTimezone(order.createdAt).format("YYYY-MM-DDTHH:mm:ss[Z]")
         })
 
         console.log(orders)
@@ -136,17 +143,20 @@ const createOrder = async (req, res, next) => {
         let total_price = 0
         let total_book = 0
         items.forEach(item => {
-            book_ids.push(item.book_id)
+            book_ids.push({ 
+                book_id: item.book_id,
+                count: item.count
+            })
             total_price += item.cart_price
             total_book += item.count
         })
 
-        console.log(book_ids, total_book, total_price)
+        // console.log(book_ids, total_book, total_price)
 
         let order = new Order({ user_id, book_ids, total_price, total_book })
         let doc = await order.save()
 
-        console.log(doc)
+        // console.log(doc)
 
         let deletedDoc = await Cart.deleteMany({ user_id })
         console.log(deletedDoc)
