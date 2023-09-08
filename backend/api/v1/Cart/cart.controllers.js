@@ -33,7 +33,7 @@ const getCartItems = async (req, res, next) => {
         books.forEach(book => {
             let obj = { ...book._doc }
 
-            obj.lastAdded = convertToTimezone(bookIdsMap[String(book.book_id)].updatedAt).format("LLL")
+            obj.lastAdded = convertToTimezone(bookIdsMap[String(book.book_id)].updatedAt).format("YYYY-MM-DDTHH:mm:ss[Z]")
             obj.orderCount = bookIdsMap[String(book.book_id)].count
             obj.totalPrice = bookIdsMap[String(book.book_id)].cart_price
 
