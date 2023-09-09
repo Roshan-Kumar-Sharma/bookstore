@@ -11,11 +11,6 @@ Router.get("/list", UserController.getAllUsers)
 Router.post("/create", validateUserMiddleware, UserController.createUser)
 Router.post("/login", validateUserMiddleware, UserController.loginUser)
 
-Router.delete("/logout", UserController.logoutUser)
-
-
-// Router.post("/createUser",
-//     ApiV1Middleware.validate(UserSchema.createUserSchema), UserController.createUser
-// )
+Router.delete("/logout", verifyAccessToken, UserController.logoutUser)
 
 export default Router

@@ -18,7 +18,10 @@ const getCartItems = async (req, res, next) => {
 
         if (isNaN(user_id)) throw createHttpError.BadRequest("Invalid user id")
 
-        // console.log(user_id)
+        let user = await User.findOne({ user_id })
+        if (!user) throw createHttpError.NotFound("User not found")
+
+        if (!user.access_token) throw createHttpError.Unauthorized("User is not logged in")
 
         let cartItems = await Cart.find({ user_id }, "-_id -__v -createdAt")
 
@@ -68,6 +71,11 @@ const deleteItemInCart = async (req, res, next) => {
 
         if (isNaN(user_id) || isNaN(book_id)) throw createHttpError.BadRequest("Invalid data found")
 
+        let user = await User.findOne({ user_id })
+        if (!user) throw createHttpError.NotFound("User not found")
+
+        if (!user.access_token) throw createHttpError.Unauthorized("User is not logged in")
+
         let deletedItem = await Cart.findOneAndDelete({ user_id, book_id })
 
         if (!deletedItem) throw createHttpError.NotFound("No item found to delete")
@@ -100,6 +108,8 @@ const addItemInCart = async (req, res, next) => {
 
         let user = await User.findOne({ user_id })
         if (!user) throw createHttpError.NotFound("User not found")
+
+        if (!user.access_token) throw createHttpError.Unauthorized("User is not logged in")
 
         let book = await Book.findOne({ book_id })
         if (!book) throw createHttpError.NotFound("Book not found")

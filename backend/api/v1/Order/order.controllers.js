@@ -28,6 +28,8 @@ const getOrderHistory = async (req, res, next) => {
         let user = await User.findOne({ user_id })
         if (!user) throw createHttpError.NotFound("User not found")
 
+        if (!user.access_token) throw createHttpError.Unauthorized("User is not logged in")
+
         let query = {}
         let sort = 1
 
@@ -93,7 +95,7 @@ const getOrderHistory = async (req, res, next) => {
 
         let bookObj = {}
         books.forEach(book => {
-            let count = bookIdsMap[String(book.book_id)] 
+            let count = bookIdsMap[String(book.book_id)]
             book._doc.count = count
             bookObj[book.book_id] = book
         })
@@ -137,13 +139,15 @@ const createOrder = async (req, res, next) => {
         let user = await User.findOne({ user_id })
         if (!user) throw createHttpError.NotFound("User not found")
 
+        if (!user.access_token) throw createHttpError.Unauthorized("User is not logged in")
+
         let items = await Cart.find({ user_id })
 
         let book_ids = []
         let total_price = 0
         let total_book = 0
         items.forEach(item => {
-            book_ids.push({ 
+            book_ids.push({
                 book_id: item.book_id,
                 count: item.count
             })

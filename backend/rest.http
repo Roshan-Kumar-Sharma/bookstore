@@ -1,68 +1,69 @@
+### Get list of users saved in database <UNPROTECTED route>
 GET http://localhost:8080/api/v1/users/list
 
-###
+### Creates a new user in db and returns access and refresh token <UNPROTECTED route>
 POST http://localhost:8080/api/v1/users/create
 Content-Type: application/json
 
 {
-    "email": "aatma@gmail.com",
-    "password": "Aatma@123"
+    "email": "String",
+    "password": "String(4,15)"
 }
 
-### login
+### Logins the user and returns access and refresh token <UNPROTECTED route>
 POST http://localhost:8080/api/v1/users/login
 Content-Type: application/json
 
 {
-    "email": "roshan@gmail.com",
-    "password": "Roshan@123"
+    "email": "String",
+    "password": "String"
 }
 
-### logout
+### Logs out the current user and delete the access and refresh token <PROTECTED route>
 DELETE http://localhost:8080/api/v1/users/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZkBnYW0uY29tIiwidXNlcl9pZCI6MiwiaWF0IjoxNjkzOTgyNDQ1LCJleHAiOjE2OTQwNjg4NDV9.NS5BCodGHbYJ3qHZqDOS03StiLLHQMhtiReY4lJY5a0
+Authorization: Bearer <TOKEN>
 
-### 
+### Creates a book entry in the database
 POST http://localhost:8080/api/v1/books/create
 Content-Type: application/json
 
 {
-    "author": "Agatha Christie",
-    "title": "Murder on the Orient Express",
-    "genre": "Mystery",
-    "publisher": "William Collins",
-    "price": 9.95,
-    "availability": null
+    "author": "String",
+    "title": "String",
+    "genre": "String",
+    "publisher": "String",
+    "price": Number,
+    "availability": null/Date
 }
 
-###
-GET http://localhost:8080/api/v1/books/id/3
+### Get the particular book details 
+GET http://localhost:8080/api/v1/books/id/<book_id>
 
-###
+### Get list of books with different conditions, sorting, pagination
 GET http://localhost:8080/api/v1/books/list?title=&author=&publisher=&genre=&s_price=&e_price=&sort_field=&sort_type=&offset=0&limit=10
 
-###
-POST http://localhost:8080/api/v1/cart/add/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMTE3MDMsImV4cCI6MTY5NDExMjAwM30.ZWFFmIhZkZ-oZq5K2Y-iJzOMHArjrZqTRCw0n8Wz-do
+### Add a book in user cart <PROTECTED route>
+POST http://localhost:8080/api/v1/cart/add/<user_id>
+Authorization: Bearer <TOKEN>
 Content-Type: application/json
 
 {
-    "book_id": 2,
-    "count": 10
+    "book_id": Number,
+    "count": Number
 }
 
-###
-GET http://localhost:8080/api/v1/cart/list/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMTE3MDMsImV4cCI6MTY5NDExMjAwM30.ZWFFmIhZkZ-oZq5K2Y-iJzOMHArjrZqTRCw0n8Wz-do
+### Get list of books added in the cart of user <PROTECTED route>
+GET http://localhost:8080/api/v1/cart/list/<user_id>
+Authorization: Bearer <TOKEN>
 
-###
-DELETE  http://localhost:8080/api/v1/cart/delete/1/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMDAyNDYsImV4cCI6MTY5NDEwMDU0Nn0.TSkPc5ErDkx9zGFWkAM0zZ7oKLP0NhtN6eRDVbyN-tQ
+### Delete a book from user cart <PROTECTED route>
+DELETE  http://localhost:8080/api/v1/cart/delete/<user_id>/<book_id>
+Authorization: Bearer  <TOKEN>
 
-###
-POST http://localhost:8080/api/v1/order/create/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMTIyODYsImV4cCI6MTY5NDExMjU4Nn0.p6nk29jINuZ4z17hwWsmQYDo8opgKQtaelsBFOWUBnk
+### Create an order history for a user <PROTECTED route>
+POST http://localhost:8080/api/v1/order/create/<user_id>
+Authorization: Bearer <TOKEN>
 
-###
-GET http://localhost:8080/api/v1/order/history/1?book_id=&s_count=&e_count=&s_price=&e_price=&limit=10&offset=0
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvc2hhbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTQxMTU1NjcsImV4cCI6MTY5NDExNTg2N30.eXzcsGhOXhhwk1c7tnpW2dJfhn_-ufl1t1R-WRl3YFc
+### Get list of order history for any user <PROTECTED route>
+GET http://localhost:8080/api/v1/order/history/<user_id>?book_id=&s_count=&e_count=&s_price=&e_price=&limit=10&offset=0
+Authorization: Bearer <TOKEN>
